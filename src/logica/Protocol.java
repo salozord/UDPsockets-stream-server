@@ -37,7 +37,6 @@ public class Protocol implements Runnable
 		dp = new DatagramPacket(bytemessage, bytemessage.length);
 		servidor.enviar(dp);
 	}
-
 	@Override
 	public void run() 
 	{

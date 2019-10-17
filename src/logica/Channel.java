@@ -130,9 +130,7 @@ public class Channel {
 				enviar(dp);
 				sumaTam += n;
 			}
-			bif.close();
-			cerrar();
-			
+			bif.close();			
 		}
 		
 	}
