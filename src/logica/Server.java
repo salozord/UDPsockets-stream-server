@@ -47,6 +47,7 @@ public class Server
  				actualHost = nextHost;
  			
  				Channel canalNuevo = new Channel(nextHost, PUERTO, archivosMultimedia[i]);
+ 				canalNuevo.canal();
  				canales.add(canalNuevo);
 				
 			}
