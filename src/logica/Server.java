@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Server 
 {
 	public static final int PORT = 8080;
-
 	private ServerSocket serverSocket;
 	private  String actualHost;
 	private ArrayList<Channel> canales;
@@ -62,13 +61,12 @@ public class Server
 		//
 		actualHost = nextHost;
 	}
-	public Channel aniadirCanal(File nuevoVideo) throws UnknownHostException
+	public void aniadirCanal(File nuevoVideo) throws UnknownHostException
 	{
 		obtenerSiguienteCanal();
 		Channel canalNuevo = new Channel(actualHost, PUERTO, nuevoVideo);
 		canalNuevo.start();
 		canales.add(canalNuevo);
-		return canalNuevo;
 	}
 
 	public void servidor() throws Exception

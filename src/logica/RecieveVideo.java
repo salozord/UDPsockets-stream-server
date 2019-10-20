@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class RecieveVideo extends Thread 
 {
@@ -55,11 +56,26 @@ public class RecieveVideo extends Thread
 					fos.flush();
 					fos.close();
 					
-					Channel canal = servidor.aniadirCanal(newVideo);
+					servidor.aniadirCanal(newVideo);
 					
+					ArrayList<Channel> canales = servidor.obtenerCanales();
+					
+					String mensajeTotal = "";
+					//envio al cliente de los canales prestados por el servidor
+					for (Channel channel : canales) 
+					{
+						String hostName = channel.getMulticastingGroup().getHostName();
+						String videoName = channel.getVideo().getName();
+						int puerto =  Server.PORT;
+						//le decimos en que host esta y el video que se muestra alli(separado por comas)
+						System.out.println("Canal " + hostName + " " + " Video : " + videoName + " Puerto "  + puerto );
+						//formato : 224.X.0.0:7070/mivideo.mp4
+						String message = hostName + ":" +puerto +"/"+ videoName + ";";
+						
+						mensajeTotal += message;
+					}
 					//envio del nuevo canal
-					escritorClienteTCP.write(canal.getMulticastingGroup().getHostName()+":"+ Server.PORT + "/" + nombreNuevoVideo);
-					
+					escritorClienteTCP.write(mensajeTotal);	
 				}
 				else
 				{
