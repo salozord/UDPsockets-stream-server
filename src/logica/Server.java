@@ -21,7 +21,7 @@ public class Server
 
 	public Server() 
 	{
-		actualHost = "224.0.0.0";
+		actualHost = "224.0.0.2";
 		canales = new ArrayList<Channel>();
 	}
 
@@ -57,7 +57,7 @@ public class Server
 		{
 			actualCh = (Integer.parseInt(actualCh) + 1) + "";
 		}
-		String nextHost = actualNet + "." + actualCh + ".0.0";
+		String nextHost = actualNet + "." + actualCh + ".0.2";
 
 		//
 		actualHost = nextHost;
