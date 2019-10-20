@@ -14,7 +14,7 @@ public class Protocol extends Thread
 	public static final String ERROR = "ERROR";
 
 	
-	private static Server servidor;
+	private Server servidor;
 		
 	private Socket cliente;
 	
@@ -27,7 +27,7 @@ public class Protocol extends Thread
 		this.cliente = cliente;
 		this.lectorClienteTCP = buf;
 		this.escritorClienteTCP = pw;
-		Protocol.servidor = s;
+		servidor = s;
 	}
 
 	
