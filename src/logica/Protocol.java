@@ -1,17 +1,33 @@
 package logica;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.DatagramPacket;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 
-public class Protocol implements Runnable 
+public class Protocol extends Thread 
 {
 	
 	public static final String PREPARADO = "PREPARADO";
 	
-	private static Server servidor;
+	public static final String ERROR = "ERROR";
+
 	
-	private DatagramPacket dp;
+	private static Server servidor;
+		
+	private Socket cliente;
+	
+	private BufferedReader lectorClienteTCP;
+	
+	private PrintWriter escritorClienteTCP;
+	
+	public Protocol(Socket cliente, BufferedReader buf, PrintWriter pw) 
+	{
+		this.cliente = cliente;
+		this.lectorClienteTCP = buf;
+		this.escritorClienteTCP = pw;
+	}
 
 	
 	public void procesar() throws IOException 
@@ -33,9 +49,11 @@ public class Protocol implements Runnable
 			mensajeTotal += message;
 			
 		}
-		byte[] bytemessage = mensajeTotal.getBytes();
-		dp = new DatagramPacket(bytemessage, bytemessage.length);
-		servidor.enviar(dp);
+		escritorClienteTCP.write(mensajeTotal);
+				
+		RecieveVideo rv = new RecieveVideo(cliente, lectorClienteTCP, escritorClienteTCP);
+		rv.start();
+		
 	}
 	@Override
 	public void run() 
