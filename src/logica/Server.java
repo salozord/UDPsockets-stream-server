@@ -106,7 +106,7 @@ public class Server
 				if(contra.equals(PASSWORD)) 
 				{
 					//para cada cliente ejecuta un protocolo
-					Protocol pro = new Protocol(client, bf, pw);
+					Protocol pro = new Protocol(this,client, bf, pw);
 					pro.start();
 				}
 				else 

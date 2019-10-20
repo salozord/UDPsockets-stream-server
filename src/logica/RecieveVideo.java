@@ -21,11 +21,12 @@ public class RecieveVideo extends Thread
 	
 	private PrintWriter escritorClienteTCP;
 	
-	public RecieveVideo(Socket cliente, BufferedReader buf, PrintWriter pw) 
+	public RecieveVideo(Server s,Socket cliente, BufferedReader buf, PrintWriter pw) 
 	{
 		this.cliente = cliente;
 		this.lectorClienteTCP = buf;
 		this.escritorClienteTCP = pw;
+		RecieveVideo.servidor = s;
 	}
 	
 	@Override

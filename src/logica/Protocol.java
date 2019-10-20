@@ -22,11 +22,12 @@ public class Protocol extends Thread
 	
 	private PrintWriter escritorClienteTCP;
 	
-	public Protocol(Socket cliente, BufferedReader buf, PrintWriter pw) 
+	public Protocol(Server s, Socket cliente, BufferedReader buf, PrintWriter pw) 
 	{
 		this.cliente = cliente;
 		this.lectorClienteTCP = buf;
 		this.escritorClienteTCP = pw;
+		Protocol.servidor = s;
 	}
 
 	
@@ -52,7 +53,7 @@ public class Protocol extends Thread
 		escritorClienteTCP.write(mensajeTotal);
 				
 		//empieza a escuchar al cliente por si quiere agregar un video a la lista
-		RecieveVideo rv = new RecieveVideo(cliente, lectorClienteTCP, escritorClienteTCP);
+		RecieveVideo rv = new RecieveVideo(servidor, cliente, lectorClienteTCP, escritorClienteTCP);
 		rv.start();
 		
 	}
