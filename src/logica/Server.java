@@ -82,14 +82,17 @@ public class Server
 		Socket client = null;
 		BufferedReader bf;
 		PrintWriter pw = null;
+		
+		
+		serverSocket = new ServerSocket(PUERTO_SERVIDOR);
+		System.out.println("Socket servidor creado.");
+
 
 		while (true) 
 		{
 			try 
 			{ 
 
-				serverSocket = new ServerSocket(PUERTO_SERVIDOR);
-				System.out.println("Socket creado.");
 
 				// Recibe el paquete de listo del cliente
 				client = serverSocket.accept();
