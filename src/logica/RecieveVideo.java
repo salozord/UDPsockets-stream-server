@@ -30,6 +30,7 @@ public class RecieveVideo extends Thread
 	@Override
 	public void run() 
 	{
+		//ciclo infinito debido a que siempre puede subir videos
 		while(true) 
 		{
 			try 
