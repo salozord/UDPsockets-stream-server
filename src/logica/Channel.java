@@ -116,7 +116,9 @@ public class Channel extends Thread{
 			ss = new DatagramSocket(puerto);
 			DatagramPacket dp;
 
-			
+			//este ciclo infinito
+			//se debe a que se hace un replay cuando el video 
+			//se termina
 			while(true)
 			{
 				File videoTemp = video;

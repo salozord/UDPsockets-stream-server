@@ -22,6 +22,7 @@ public class Server
 	public Server() 
 	{
 		actualHost = "224.0.0.0";
+		canales = new ArrayList<Channel>();
 	}
 
 	public void asignacionDeCanales() throws IOException
@@ -32,17 +33,18 @@ public class Server
 		for (int i = 0; i < archivosMultimedia.length && canales.size() < MAX_CHANNELS ; i++) 
 		{
 			obtenerSiguienteCanal();
+			System.out.println("Next host for multicasting : "+ actualHost);
 
 			Channel canalNuevo = new Channel(actualHost, PUERTO, archivosMultimedia[i]);
-			canalNuevo.run();
 			canales.add(canalNuevo);
+			canalNuevo.start();
 
 		}
 
 	}
 	public void obtenerSiguienteCanal()
 	{
-		String[] splitted = actualHost.split(".");
+		String[] splitted = actualHost.split("\\.");
 		String actualCh = splitted[1];
 		String actualNet =  splitted[0];
 
@@ -102,13 +104,9 @@ public class Server
 				String contra = userPss[1];
 				if(contra.equals(PASSWORD)) 
 				{
-
 					//para cada cliente ejecuta un protocolo
 					Protocol pro = new Protocol(client, bf, pw);
 					pro.start();
-					
-				
-					
 				}
 				else 
 				{
@@ -130,7 +128,8 @@ public class Server
 	}
 
 
-	public ArrayList<Channel> obtenerCanales(){
+	public ArrayList<Channel> obtenerCanales()
+	{
 		return canales;
 	}
 	public static void main(String ... args){
