@@ -76,11 +76,11 @@ public class RecieveVideo extends Thread
 						mensajeTotal += message;
 					}
 					//envio del nuevo canal
-					escritorClienteTCP.write(mensajeTotal);	
+					escritorClienteTCP.println(mensajeTotal);	
 				}
 				else
 				{
-					escritorClienteTCP.write(Protocol.ERROR);
+					escritorClienteTCP.println(Protocol.ERROR);
 					cliente.close();
 					System.out.println("El cliente no desarrollo el protocolo");
 				}

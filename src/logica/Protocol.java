@@ -50,7 +50,7 @@ public class Protocol extends Thread
 			mensajeTotal += message;
 			
 		}
-		escritorClienteTCP.write(mensajeTotal);
+		escritorClienteTCP.println(mensajeTotal);
 				
 		//empieza a escuchar al cliente por si quiere agregar un video a la lista
 		RecieveVideo rv = new RecieveVideo(servidor, cliente, lectorClienteTCP, escritorClienteTCP);

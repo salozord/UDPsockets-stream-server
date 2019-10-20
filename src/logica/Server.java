@@ -16,6 +16,7 @@ public class Server
 	private static final int MAX_CHANNELS = 3825;
 	private static final int PUERTO = 7777;
 	private static final String PASSWORD = "1234";
+	private static final String AUTENTICADO = "AUTENTICADO";
 
 
 	public Server() 
@@ -98,20 +99,21 @@ public class Server
 				client = serverSocket.accept();
 
 				bf = new BufferedReader(new InputStreamReader(client.getInputStream()));
-				pw = new PrintWriter(new OutputStreamWriter(client.getOutputStream()));
+				pw = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
 				String recibida = bf.readLine();
 
 				String[] userPss = recibida.split(";");
 				String contra = userPss[1];
 				if(contra.equals(PASSWORD)) 
 				{
+					pw.println(AUTENTICADO);
 					//para cada cliente ejecuta un protocolo
 					Protocol pro = new Protocol(this,client, bf, pw);
 					pro.start();
 				}
 				else 
 				{
-					pw.write(Protocol.ERROR);
+					pw.println(Protocol.ERROR);
 					System.err.println("Algo ocurrió y llegó un paquete que no decía PREPARADO (ya existe una referencia al cliente de donde llegó)");
 				}
 				
@@ -120,7 +122,7 @@ public class Server
 			} 
 			catch (IOException e) 
 			{
-				pw.write(Protocol.ERROR);
+				pw.println(Protocol.ERROR);
 				System.err.println("Error creando el socket cliente.");
 				client.close();
 				e.printStackTrace();
