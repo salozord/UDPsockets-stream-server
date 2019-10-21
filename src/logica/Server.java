@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Server 
 {
 	public static final int PORT = 8080;
+	public static final String DIR = "./data";
 	private ServerSocket serverSocket;
 	private  String actualHost;
 	private ArrayList<Channel> canales;
@@ -26,7 +27,7 @@ public class Server
 
 	public void asignacionDeCanales() throws IOException
 	{
-		File directorio = new File("./data");
+		File directorio = new File(DIR);
 		File [] archivosMultimedia = directorio.listFiles();
 
 		for (int i = 0; i < archivosMultimedia.length && canales.size() < MAX_CHANNELS ; i++) 
@@ -58,7 +59,6 @@ public class Server
 		}
 		String nextHost = actualNet + "." + actualCh + ".0.2";
 
-		//
 		actualHost = nextHost;
 	}
 	public void aniadirCanal(File nuevoVideo) throws UnknownHostException

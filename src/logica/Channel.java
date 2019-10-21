@@ -1,9 +1,6 @@
 package logica;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -16,11 +13,6 @@ public class Channel extends Thread{
 	 * Archivo del video transmitido
 	 */
 	private File video;
-
-	/**
-	 * Socket del canal
-	 */
-	private DatagramSocket ss;
 
 	/**
 	 * Direccion del multicast
@@ -45,7 +37,6 @@ public class Channel extends Thread{
 		video = arch;
 	}
 
-
 	public File getVideo() 
 	{
 		return video;
@@ -56,19 +47,6 @@ public class Channel extends Thread{
 	{
 		this.video = video;
 	}
-
-
-	public DatagramSocket getSs() 
-	{
-		return ss;
-	}
-
-
-	public void setSs(DatagramSocket ss) 
-	{
-		this.ss = ss;
-	}
-
 
 	public InetAddress getMulticastingGroup() 
 	{
@@ -93,21 +71,6 @@ public class Channel extends Thread{
 		this.puerto = puerto;
 	}
 
-	public void enviar(DatagramPacket pp) throws IOException
-	{
-		ss.send(pp);
-	}
-
-	public void recibir(DatagramPacket pp) throws IOException
-	{
-		ss.receive(pp);
-	}
-
-	public void cerrar()
-	{
-		ss.close();
-	}
-
 	private static String formatRtpStream(String serverAddress, int serverPort) {
         StringBuilder sb = new StringBuilder(60);
         sb.append(":sout=#rtp{dst=");
@@ -122,10 +85,10 @@ public class Channel extends Thread{
 	public void run() 
 	{
 
-		String mrl = video.getAbsolutePath();
+		String mrl = video.getPath();
 		String opciones = formatRtpStream(multicastingGroup.getHostAddress(), puerto);
 		
-		MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory(new String[] {video.getAbsolutePath()});
+		MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory(mrl);
 		MediaPlayer mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
 		
 		boolean ans = mediaPlayer.media().play(mrl, opciones, ":no-sout-rtp-sap", ":no-sout-standard-sap", ":sout-all", ":sout-keep");
@@ -136,6 +99,7 @@ public class Channel extends Thread{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		mediaPlayer.release();
 	}
 
 
