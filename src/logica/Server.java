@@ -8,13 +8,12 @@ import java.util.ArrayList;
 
 public class Server 
 {
-	public static final int PORT = 7777;
+	public static final int PORT = 8080;
 	private ServerSocket serverSocket;
 	private  String actualHost;
 	private ArrayList<Channel> canales;
 	private static final int PUERTO_SERVIDOR = 8787;
 	private static final int MAX_CHANNELS = 3825;
-//	private static final int PUERTO = 7777;
 	private static final String PASSWORD = "1234";
 	private static final String AUTENTICADO = "AUTENTICADO";
 
@@ -66,7 +65,6 @@ public class Server
 	{
 		obtenerSiguienteCanal();
 		Channel canalNuevo = new Channel(actualHost, PORT, nuevoVideo);
-//		Channel canalNuevo = new Channel(actualHost, PUERTO, nuevoVideo);
 		canalNuevo.start();
 		canales.add(canalNuevo);
 	}

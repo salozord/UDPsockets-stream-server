@@ -1,13 +1,14 @@
 package logica;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+
+import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
+import uk.co.caprica.vlcj.player.base.MediaPlayer;
 
 public class Channel extends Thread{
 
@@ -107,44 +108,34 @@ public class Channel extends Thread{
 		ss.close();
 	}
 
-
+	private static String formatRtpStream(String serverAddress, int serverPort) {
+        StringBuilder sb = new StringBuilder(60);
+        sb.append(":sout=#rtp{dst=");
+        sb.append(serverAddress);
+        sb.append(",port=");
+        sb.append(serverPort);
+        sb.append(",mux=ts}");
+        return sb.toString();
+    }
+	
 	@Override
 	public void run() 
 	{
-		try 
-		{
-			ss = new DatagramSocket();
-			DatagramPacket dp;
 
-			//este ciclo infinito
-			//se debe a que se hace un replay cuando el video 
-			//se termina
-			while(true)
-			{
-				File videoTemp = video;
-				BufferedInputStream bif = new BufferedInputStream(new FileInputStream(videoTemp));
-				int n;
-				int sumaTam = 0;
-
-				byte[] content = new byte[TAMANIO_SEGMENTO];
-
-				while(sumaTam < video.length() &&  (n = bif.read(content)) != 1)
-				{
-					dp = new DatagramPacket(content,content.length, multicastingGroup, puerto);
-					enviar(dp);
-					sumaTam += n;
-				}
-				bif.close();			
-			}
-		} catch (IOException e) 
-		{
-			cerrar();
+		String mrl = video.getAbsolutePath();
+		String opciones = formatRtpStream(multicastingGroup.getHostAddress(), puerto);
+		
+		MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory(new String[] {video.getAbsolutePath()});
+		MediaPlayer mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
+		
+		boolean ans = mediaPlayer.media().play(mrl, opciones, ":no-sout-rtp-sap", ":no-sout-standard-sap", ":sout-all", ":sout-keep");
+		System.out.println(ans);
+		
+		try {
+			Thread.currentThread().join();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-
-		
-
 	}
 
 
