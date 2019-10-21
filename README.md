@@ -9,5 +9,5 @@ a que si este no es instalado, no podrá funcionar el programa a pesar de que la
 
 ## Funcionamiento
 El servidor inicia a funcionar, simplemente con ejecutarlo en Eclipse o bien sea generando un .jar y corriendolo. Este lee los vídeos de la carpeta 
-`./data` y con esto comienza a realizar su streaming cada uno en un canal de multicast distinto. Los canales se envían al cliente y este elige a 
+`./data` **SE DEBE CREAR DICHA CARPETA Y COLOCAR 1 VÍDEO EN ELLA** y con esto comienza a realizar su streaming cada uno en un canal de multicast distinto. Los canales se envían al cliente y este elige a 
 cuál conectarse para recibir el streaming en tiempo real.
