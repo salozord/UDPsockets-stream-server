@@ -70,7 +70,7 @@ public class RecieveVideo extends Thread
 						int puerto =  Server.PORT;
 						//le decimos en que host esta y el video que se muestra alli(separado por comas)
 						System.out.println("Canal " + hostName + " " + " Video : " + videoName + " Puerto "  + puerto );
-						//formato : 224.X.0.0:7070/mivideo.mp4
+						//formato : 238.X.0.2:7070/mivideo.mp4
 						String message = hostName + ":" +puerto +"/"+ videoName + ";";
 						
 						mensajeTotal += message;
