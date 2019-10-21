@@ -21,7 +21,7 @@ public class Server
 
 	public Server() 
 	{
-		actualHost = "238.0.0.2";
+		actualHost = "238.0.0.0";
 		canales = new ArrayList<Channel>();
 	}
 
@@ -45,7 +45,7 @@ public class Server
 	public void obtenerSiguienteCanal()
 	{
 		String[] splitted = actualHost.split("\\.");
-		String actualCh = splitted[1];
+		String actualCh = splitted[3];
 		String actualNet =  splitted[0];
 
 		if(Integer.parseInt(actualCh) == 255)
@@ -57,7 +57,7 @@ public class Server
 		{
 			actualCh = (Integer.parseInt(actualCh) + 1) + "";
 		}
-		String nextHost = actualNet + "." + actualCh + ".0.2";
+		String nextHost = actualNet + ".0.0." + actualCh;
 
 		actualHost = nextHost;
 	}
@@ -115,8 +115,6 @@ public class Server
 					pw.println(Protocol.ERROR);
 					System.err.println("Algo ocurrió y llegó un paquete que no decía PREPARADO (ya existe una referencia al cliente de donde llegó)");
 				}
-				
-				
 
 			} 
 			catch (IOException e) 

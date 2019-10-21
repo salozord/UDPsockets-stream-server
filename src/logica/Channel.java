@@ -4,11 +4,19 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import com.sun.jna.NativeLibrary;
+
+import uk.co.caprica.vlcj.binding.RuntimeUtil;
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 
 public class Channel extends Thread{
 
+	/**
+	 * Division en segmentos del archivo
+	 */
+	public static final Integer TAMANIO_SEGMENTO = 32768;
+	
 	/**
 	 * Archivo del video transmitido
 	 */
@@ -23,11 +31,6 @@ public class Channel extends Thread{
 	 * Puerto donde funciona el canal
 	 */
 	private int puerto;
-
-	/**
-	 * Division en segmentos del archivo
-	 */
-	public static final Integer TAMANIO_SEGMENTO = 32768;
 
 
 	public Channel(String host, int port, File arch) throws UnknownHostException 
@@ -81,16 +84,22 @@ public class Channel extends Thread{
         return sb.toString();
     }
 	
+	private synchronized void crearReproductor() {
+		
+	}
+	
 	@Override
 	public void run() 
 	{
-
+		NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "D:\\Programas\\VLC");
 		String mrl = video.getPath();
 		String opciones = formatRtpStream(multicastingGroup.getHostAddress(), puerto);
 		
+		crearReproductor();
+				
 		MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory(mrl);
 		MediaPlayer mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
-		
+	
 		boolean ans = mediaPlayer.media().play(mrl, opciones, ":no-sout-rtp-sap", ":no-sout-standard-sap", ":sout-all", ":sout-keep");
 		System.out.println(ans);
 		
