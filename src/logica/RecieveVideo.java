@@ -14,7 +14,7 @@ public class RecieveVideo extends Thread
 	
 	private static final String NUEVO_VIDEO =  "VIDEO;";
 	
-	private static Server servidor;
+	private Server servidor;
 	private Socket cliente;
 	
 	private BufferedReader lectorClienteTCP;
@@ -26,7 +26,7 @@ public class RecieveVideo extends Thread
 		this.cliente = cliente;
 		this.lectorClienteTCP = buf;
 		this.escritorClienteTCP = pw;
-		RecieveVideo.servidor = s;
+		servidor = s;
 	}
 	
 	@Override
@@ -45,18 +45,21 @@ public class RecieveVideo extends Thread
 					File newVideo = new File("./data/"+nombreNuevoVideo);
 					FileOutputStream fos = new FileOutputStream(newVideo);
 					
-					
-					int r ;
+					int r;
 					byte[] buffer = new byte[8192];
 					DataInputStream dis = new DataInputStream(cliente.getInputStream());
 
-					while((r = dis.read(buffer)) != -1)
+					long tamTotal = dis.readLong();
+					long actual = 0;
+					while(actual < tamTotal && (r = dis.read(buffer)) != -1)
 					{
 						fos.write(buffer, 0, r);
+						fos.flush();
+						actual += r;
 					}
-					fos.flush();
 					fos.close();
 					
+					System.out.println("SALE SERVER DEL WHILE");
 					servidor.aniadirCanal(newVideo);
 					
 					ArrayList<Channel> canales = servidor.obtenerCanales();
@@ -70,9 +73,9 @@ public class RecieveVideo extends Thread
 						int puerto =  Server.PORT;
 						//le decimos en que host esta y el video que se muestra alli(separado por comas)
 						System.out.println("Canal " + hostName + " " + " Video : " + videoName + " Puerto "  + puerto );
-						//formato : 238.X.0.2:7070/mivideo.mp4
+						//formato : 238.X.0.2:8080/mivideo.mp4
 						String message = hostName + ":" +puerto +"/"+ videoName + ";";
-						
+			
 						mensajeTotal += message;
 					}
 					//envio del nuevo canal

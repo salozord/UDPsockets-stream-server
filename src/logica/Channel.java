@@ -113,7 +113,7 @@ public class Channel extends Thread{
 	{
 		try 
 		{
-			ss = new DatagramSocket(puerto);
+			ss = new DatagramSocket();
 			DatagramPacket dp;
 
 			//este ciclo infinito
@@ -130,7 +130,7 @@ public class Channel extends Thread{
 
 				while(sumaTam < video.length() &&  (n = bif.read(content)) != 1)
 				{
-					dp = new DatagramPacket(content, 0, content.length, multicastingGroup, puerto);
+					dp = new DatagramPacket(content,content.length, multicastingGroup, puerto);
 					enviar(dp);
 					sumaTam += n;
 				}
