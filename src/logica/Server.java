@@ -21,7 +21,7 @@ public class Server
 
 	public Server() 
 	{
-		actualHost = "224.0.0.2";
+		actualHost = "238.0.0.2";
 		canales = new ArrayList<Channel>();
 	}
 
