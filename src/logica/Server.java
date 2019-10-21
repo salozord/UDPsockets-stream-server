@@ -93,7 +93,6 @@ public class Server
 			try 
 			{ 
 
-
 				// Recibe el paquete de listo del cliente
 				client = serverSocket.accept();
 

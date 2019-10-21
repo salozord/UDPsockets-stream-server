@@ -84,20 +84,24 @@ public class Channel extends Thread{
         return sb.toString();
     }
 	
-	private synchronized void crearReproductor() {
-		
+	private synchronized MediaPlayerFactory crearReproductor(String mrl) {
+		try {
+			Thread.sleep(700);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return (new MediaPlayerFactory(mrl));
 	}
 	
 	@Override
 	public void run() 
 	{
-		NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "D:\\Programas\\VLC");
+//		NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "D:\\Programas\\VLC");
 		String mrl = video.getPath();
 		String opciones = formatRtpStream(multicastingGroup.getHostAddress(), puerto);
 		
-		crearReproductor();
-				
-		MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory(mrl);
+		MediaPlayerFactory mediaPlayerFactory = crearReproductor(mrl);
 		MediaPlayer mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
 	
 		boolean ans = mediaPlayer.media().play(mrl, opciones, ":no-sout-rtp-sap", ":no-sout-standard-sap", ":sout-all", ":sout-keep");

@@ -86,16 +86,19 @@ public class RecieveVideo extends Thread
 					escritorClienteTCP.println(Protocol.ERROR);
 					cliente.close();
 					System.out.println("El cliente no desarrollo el protocolo");
+					break;
 				}
 			} catch (IOException e) 
 			{
 				try 
 				{
 					cliente.close();
-					e.printStackTrace();
+					break;
+//					e.printStackTrace();
 				} catch (IOException e1) 
 				{
 					e1.printStackTrace();
+					break;
 				}
 			}
 			
